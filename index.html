@@ -182,20 +182,19 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 10px 50px; /* Spacing between Play (left) and Discord (right) */
+      gap: 10px 50px;
     }
     
     .hero-logo-wrapper {
       width: 100%;
-      order: 1; /* Logo forced to the top */
+      order: 1;
       margin-bottom: 5px;
     }
     .hero-logo { height: 90px; }
     
-    .status-side { order: 2; }  /* Server IP on the LEFT */
-    .discord-side { order: 3; } /* Discord on the RIGHT */
+    .status-side { order: 2; }
+    .discord-side { order: 3; }
 
-    /* Remove the dark translucent background boxes entirely */
     .hero-side {
       background: transparent !important;
       backdrop-filter: none !important;
@@ -208,10 +207,8 @@
       padding: 0 !important;
     }
     
-    /* Remove hover jumps on mobile */
     .status-side:hover, .discord-side:hover { transform: none; }
 
-    /* Force "Pill top, Icon bottom" stacking for both */
     .status-side {
       display: flex;
       flex-direction: column !important;
@@ -225,7 +222,6 @@
       gap: 12px !important;
     }
 
-    /* Hide the IP, "Click to join", and "PLAYERS ONLINE" text */
     .mobile-hide, .stat-text { 
       display: none !important; 
     }
@@ -235,7 +231,6 @@
       letter-spacing: normal;
     }
 
-    /* Style the numbers as solid orange pills */
     .stat-pill {
       background-color: var(--orange);
       color: var(--text);
@@ -246,19 +241,18 @@
       display: inline-block;
     }
 
-    /* Style the icons as solid orange rounded squares (squircles) */
     .hero-bubble {
       width: 58px;
       height: 58px;
       background-color: var(--orange);
-      box-shadow: none; /* No shadow */
-      border-radius: 18px; /* Uniform rounded square shape for both */
+      box-shadow: none;
+      border-radius: 18px;
     }
     
     .hero-bubble svg {
       width: 32px;
       height: 32px;
-      fill: #ffffff; /* Keep icons white as shown in your new images */
+      fill: #ffffff;
     }
     
     .hero-text-block {
@@ -292,6 +286,10 @@
     gap: 12px;
     list-style: none;
     flex: 1;
+    width: 100%;
+  }
+  .nav-links li {
+    display: inline-flex;
   }
   .nav-links a {
     color: var(--text-muted);
@@ -302,6 +300,7 @@
     font-size: 0.95rem;
     transition: all 0.2s;
     letter-spacing: 0.02em;
+    white-space: nowrap;
   }
   .nav-links a:hover, .nav-links a.active {
     color: var(--orange);
@@ -309,16 +308,39 @@
   }
   .nav-store {
     background: var(--orange);
-    color: #fff !important;
+    color: var(--bg) !important;
     padding: 9px 20px !important;
     border-radius: 10px !important;
     font-weight: 800 !important;
-    color: var(--bg) !important;
     transition: background 0.2s !important;
   }
   .nav-store:hover { 
     background: var(--orange-dark) !important;
     color: #fff !important; 
+  }
+
+  /* 📱 MOBILE NAVIGATION ADAPTATION */
+  @media (max-width: 600px) {
+    nav {
+      padding: 0 10px;
+    }
+    .nav-links {
+      gap: 6px;
+    }
+    .nav-links a {
+      padding: 6px 10px;
+      font-size: 0.85rem;
+    }
+    /* Changes "Visit our Store" text to just "Store" on mobile devices */
+    .nav-store {
+      font-size: 0 !important; /* Hides original "Visit our Store" text */
+      padding: 6px 14px !important;
+    }
+    .nav-store::before {
+      content: "Store";
+      font-size: 0.85rem; /* Restores correct font scaling for injected string */
+      font-weight: 800;
+    }
   }
 
   /* MAIN LAYOUT */
@@ -1301,7 +1323,7 @@ const allPosts = [
   },
 ];
 
-const POSTS_PER_PAGE = 7; // 1 featured + 6 in grid (2 rows of 3)
+const POSTS_PER_PAGE = 7; 
 let currentPage = 1;
 const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
 
@@ -1324,7 +1346,6 @@ function renderPosts() {
 
   let html = '';
 
-  // Featured card
   if (featured) {
     html += `
     <div class="post-card-featured">
@@ -1342,7 +1363,6 @@ function renderPosts() {
     </div>`;
   }
 
-  // 3-col grid
   if (rest.length > 0) {
     html += '<div class="posts-subgrid">';
     rest.forEach(p => {
@@ -1487,13 +1507,12 @@ function setStaffTab(role) {
 
 renderStaffTabs();
 renderStaffGrid();
-// Copies the IP to clipboard when clicked
+
 function copyIP(ip) {
   navigator.clipboard.writeText(ip);
   alert("IP Copied to clipboard: " + ip);
 }
 
-// Fetch Live Minecraft Player Count (Adjusted for pill logic)
 fetch('https://api.mcsrvstat.us/3/play.trashmcpe.in')
   .then(response => response.json())
   .then(data => {
@@ -1505,7 +1524,6 @@ fetch('https://api.mcsrvstat.us/3/play.trashmcpe.in')
   })
   .catch(error => console.error('Error fetching Minecraft stats:', error));
 
-// Fetch Live Discord User Count (Adjusted for pill logic)
 fetch('https://discord.com/api/guilds/745497901203193978/widget.json')
   .then(response => response.json())
   .then(data => {
