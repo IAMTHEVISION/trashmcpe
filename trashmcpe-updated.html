@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrashMCPE</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #de7009;
+    --orange-dark: #b55c07;
+    --orange-light: #f5c896;
+    --bg: #1a1210;
+    --bg2: #231814;
+    --bg3: #2e1f18;
+    --card: #2a1c15;
+    --card2: #341f17;
+    --text: #f5e8df;
+    --text-muted: #b89080;
+    --border: #4a2e22;
+    --green: #5ecf7a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HERO CONTAINER & LOGO */
+  .hero-container {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .hero-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4); 
+    z-index: 1;
+  }
+
+  .hero-overlay-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+
+  .hero-side {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .discord-inner {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-text-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .text-right { text-align: right; align-items: flex-end; }
+  .text-left { text-align: left; align-items: flex-start; }
+
+  .hero-stat-title {
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: #de7009;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .hero-bubble {
+    width: 48px;
+    height: 48px;
+    background-color: #de7009;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 6px 16px #de700966;
+  }
+
+  .hero-bubble svg {
+    width: 22px;
+    height: 22px;
+    fill: #ffffff;
+  }
+
+  .hero-logo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .hero-logo {
+    height: 120px;
+    filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.6));
+    transition: transform 0.2s;
+  }
+
+  .hero-logo:hover {
+    transform: scale(1.05);
+  }
+
+  .animated-logo {
+    animation: pulse 3s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  /* COBALT-STYLE HERO REEL */
+  .status-side, .discord-side {
+    transition: 0.25s;
+  }
+  .status-side { cursor: pointer; }
+  .status-side:hover, .discord-side:hover {
+    transform: translateY(-2px);
+  }
+  .bottom-text {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    overflow: hidden;
+    height: 20px;
+    line-height: 20px;
+  }
+  .reel-1 {
+    transition: 0.25s;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .text-left .reel-1 { justify-content: flex-start; }
+  .status-side:hover .reel-1,
+  .discord-side:hover .reel-1 {
+    transform: translateY(-20px);
+  }
+  .top-text {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  /* 📱 EXCLUSIVE MOBILE HERO LAYOUT */
+  @media (max-width: 900px) {
+    .hero-overlay-content {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px 50px; /* Spacing between Play (left) and Discord (right) */
+    }
+    
+    .hero-logo-wrapper {
+      width: 100%;
+      order: 1; /* Logo forced to the top */
+      margin-bottom: 5px;
+    }
+    .hero-logo { height: 90px; }
+    
+    .status-side { order: 2; }  /* Server IP on the LEFT */
+    .discord-side { order: 3; } /* Discord on the RIGHT */
+
+    /* Remove the dark translucent background boxes entirely */
+    .hero-side {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      border: none !important;
+      padding: 0 !important;
+      width: auto;
+    }
+    .discord-inner {
+      background: transparent !important;
+      padding: 0 !important;
+    }
+    
+    /* Remove hover jumps on mobile */
+    .status-side:hover, .discord-side:hover { transform: none; }
+
+    /* Force "Pill top, Icon bottom" stacking for both */
+    .status-side {
+      display: flex;
+      flex-direction: column !important;
+      align-items: center;
+      gap: 12px !important;
+    }
+    .discord-inner {
+      display: flex;
+      flex-direction: column-reverse !important;
+      align-items: center;
+      gap: 12px !important;
+    }
+
+    /* Hide the IP, "Click to join", and "PLAYERS ONLINE" text */
+    .mobile-hide, .stat-text { 
+      display: none !important; 
+    }
+    
+    .hero-stat-title {
+      text-shadow: none;
+      letter-spacing: normal;
+    }
+
+    /* Style the numbers as solid orange pills */
+    .stat-pill {
+      background-color: var(--orange);
+      color: var(--text);
+      padding: 5px 18px;
+      border-radius: 20px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      display: inline-block;
+    }
+
+    /* Style the icons as solid orange rounded squares (squircles) */
+    .hero-bubble {
+      width: 58px;
+      height: 58px;
+      background-color: var(--orange);
+      box-shadow: none; /* No shadow */
+      border-radius: 18px; /* Uniform rounded square shape for both */
+    }
+    
+    .hero-bubble svg {
+      width: 32px;
+      height: 32px;
+      fill: #ffffff; /* Keep icons white as shown in your new images */
+    }
+    
+    .hero-text-block {
+      align-items: center !important;
+      text-align: center !important;
+    }
+  }
+
+  /* NAV */
+  header {
+    background: var(--bg2);
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 64px;
+  }
+  .nav-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    flex: 1;
+  }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--orange);
+    background: rgba(254,153,87,0.12);
+  }
+  .nav-store {
+    background: var(--orange);
+    color: #fff !important;
+    padding: 9px 20px !important;
+    border-radius: 10px !important;
+    font-weight: 800 !important;
+    color: var(--bg) !important;
+    transition: background 0.2s !important;
+  }
+  .nav-store:hover { 
+    background: var(--orange-dark) !important;
+    color: #fff !important; 
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    flex: 1;
+    width: 100%;
+  }
+
+  /* PAGE SECTIONS */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HOME - BLOG POSTS */
+  .posts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* FEATURED TOP CARD */
+  .post-card-featured {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .post-card-featured:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(254,153,87,0.18);
+  }
+  .post-card-featured .post-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+  .post-card-featured .post-body {
+    padding: 28px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* 3-COLUMN GRID */
+  .posts-subgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .post-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(254,153,87,0.15);
+  }
+  .post-card .post-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+  }
+  .post-card .post-body {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+  }
+
+  /* SHARED CARD STYLES */
+  .post-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(254,153,87,0.15);
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 5px;
+    width: fit-content;
+  }
+  .post-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--text);
+    line-height: 1.25;
+  }
+  .post-card-featured .post-title {
+    font-size: 1.45rem;
+  }
+  .post-date {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .post-excerpt {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-card-featured .post-excerpt {
+    -webkit-line-clamp: 4;
+  }
+  .post-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .post-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .post-author-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border);
+  }
+  .post-author-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .post-author-label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .post-author-name {
+    font-size: 0.78rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+  .post-read-more {
+    background: var(--orange);
+    color: var(--bg) !important;
+    font-weight: 800;
+    font-size: 0.78rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .post-read-more:hover {
+    background: var(--orange-dark);
+    transform: scale(1.04);
+  }
+
+  /* PAGINATION */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 36px;
+    padding: 16px 0;
+  }
+  .pagination-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+  }
+  .pagination-btn:hover:not(:disabled) {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: rgba(254,153,87,0.08);
+  }
+  .pagination-btn:disabled { opacity: 0.35; cursor: default; }
+  .pagination-info {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    padding: 0 6px;
+  }
+
+  @media (max-width: 900px) {
+    .posts-subgrid { grid-template-columns: repeat(2, 1fr); }
+    .post-card-featured { grid-template-columns: 1fr; }
+    .post-card-featured .post-img { height: 200px; }
+  }
+  @media (max-width: 600px) {
+    .posts-subgrid { grid-template-columns: 1fr; }
+  }
+
+  /* RULES PAGE */
+  .page-hero {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 36px;
+  }
+  .page-hero img { width: 100%; display: block; max-height: 300px; object-fit: cover; }
+  .rules-intro {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 28px;
+    margin-bottom: 32px;
+    color: var(--text-muted);
+    font-size: 0.97rem;
+    line-height: 1.7;
+    border-left: 4px solid var(--orange);
+  }
+  .rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .rule-card:hover { border-color: var(--orange); }
+  .rule-num {
+    background: var(--orange);
+    color: var(--bg);
+    font-weight: 900;
+    font-size: 0.8rem;
+    min-width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+  }
+  .rule-content h3 {
+    font-weight: 800;
+    font-size: 0.97rem;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .rule-content p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* STAFF PAGE */
+  .staff-page-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .staff-apply {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: sticky;
+    top: 80px;
+  }
+  .staff-apply-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .staff-apply-title span { font-size: 1.1rem; }
+  .staff-apply p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .btn-apply {
+    background: var(--orange);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 13px 0;
+    border-radius: 10px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-apply:hover { background: var(--orange-dark); transform: scale(1.02); }
+
+  /* Right panel */
+  .staff-right {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .staff-right-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.7rem;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  /* Tab filter row */
+  .staff-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .staff-tab {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .staff-tab:hover { border-color: var(--orange); color: var(--orange); }
+  .staff-tab.active {
+    background: transparent;
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* Staff cards grid */
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+  .staff-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    padding: 16px 10px 0;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .staff-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(254,153,87,0.18);
+    border-color: var(--orange);
+  }
+  .staff-card-name {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .staff-card-role {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    text-transform: capitalize;
+  }
+  .staff-card img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    image-rendering: pixelated;
+  }
+
+  /* ROLE BADGE COLORS */
+  .role-owner .staff-card-role { color: #ff5c5c; }
+  .role-lead .staff-card-role { color: #c084fc; }
+  .role-dev .staff-card-role { color: #60a5fa; }
+  .role-admin .staff-card-role { color: #f59e0b; }
+  .role-mod .staff-card-role { color: var(--green); }
+  .role-helper .staff-card-role { color: #34d399; }
+  .role-trainee .staff-card-role { color: #94a3b8; }
+  .role-builder .staff-card-role { color: #fb923c; }
+
+  @media (max-width: 800px) {
+    .staff-page-layout { grid-template-columns: 1fr; }
+    .staff-apply { position: static; }
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2);
+    border-top: 2px solid var(--border);
+    padding: 40px 20px;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  .footer-brand img { height: 48px; margin-bottom: 14px; }
+  .footer-brand p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.65; }
+  .footer-col h4 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    color: var(--orange);
+    margin-bottom: 14px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col ul a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--orange); }
+  .footer-store-btn {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--bg);
+    font-weight: 800;
+    padding: 10px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .footer-store-btn:hover { background: var(--orange-dark); }
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 28px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-socials { display: flex; gap: 14px; }
+  .footer-socials a { color: var(--text-muted); text-decoration: none; font-weight: 700; transition: color 0.2s; }
+  .footer-socials a:hover { color: var(--orange); }
+
+  /* PAGE TITLE */
+  .page-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .page-subtitle {
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 700px) {
+    .footer-inner { grid-template-columns: 1fr; }
+    .staff-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+  }
+
+  /* VOTE PAGE */
+  .vote-outer {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  /* LEFT SIDEBAR */
+  .vote-sidebar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: sticky;
+    top: 80px;
+  }
+  .vote-why-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .vote-why-title .why-icon {
+    width: 26px;
+    height: 26px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+  .vote-why-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .vote-rewards-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .rewards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .reward-tile {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .reward-tile svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--orange);
+    opacity: 0.85;
+  }
+  .reward-tile-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  /* RIGHT PANEL */
+  .vote-right {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .vote-links-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .vote-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .vote-tile {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .vote-tile:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254,153,87,0.15);
+  }
+  .vote-tile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .vote-tile-name {
+    font-weight: 800;
+    font-size: 0.97rem;
+    color: var(--text);
+  }
+  .vote-tile-freq {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .vote-tile-icon {
+    color: var(--orange);
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 1000px) {
+    .vote-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .vote-outer { grid-template-columns: 1fr; }
+    .vote-sidebar { position: static; }
+    .vote-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .vote-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero-container">
+  <img src="https://ottersmp.com/content/images/size/w1200/2026/05/rapid_rivers_promo-2.png" alt="Server Background" class="hero-banner">
+  
+  <div class="hero-overlay-content">
+    
+    <div class="hero-side status-side" onclick="copyIP('play.trashmcpe.in')">
+      <div class="hero-text-block text-right">
+        <span class="hero-stat-title top-text">
+          <span id="mc-online-num" class="stat-pill">...</span>
+          <span id="mc-online-text" class="stat-text"> PLAYERS ONLINE</span>
+        </span>
+        <div class="bottom-text mobile-hide">
+          <div class="reel-1"><span>PLAY.TRASHMCPE.IN</span></div>
+          <div class="reel-1">Click to copy IP</div>
+        </div>
+      </div>
+      <div class="hero-bubble left play-btn">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+
+    <div class="hero-logo-wrapper">
+      <img src="https://gcdnb.pbrd.co/images/yu0C9As1zvHv.png" alt="TrashMCPE Logo" class="hero-logo animated-logo">
+    </div>
+
+    <div class="hero-side discord-side">
+      <a href="https://discord.gg/VhvrCGFYeJ" target="_blank" class="discord-inner">
+        <div class="hero-bubble right discord-btn">
+          <svg viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3333-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3333-.946 2.4189-2.1568 2.4189Z"/></svg>
+        </div>
+        <div class="hero-text-block text-left">
+          <span class="hero-stat-title top-text">
+            <span id="discord-online-num" class="stat-pill">...</span>
+            <span id="discord-online-text" class="stat-text"> USERS ONLINE</span>
+          </span>
+          <div class="bottom-text mobile-hide">
+            <div class="reel-1">DISCORD.GG/TRASHMCPE</div>
+            <div class="reel-1">Click to join</div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<header>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+      <li><a href="#" onclick="showPage('staff')" id="nav-staff">Staff</a></li>
+      <li><a href="#" onclick="showPage('vote')" id="nav-vote">Vote</a></li>
+      <li><a href="#" onclick="showPage('rules')" id="nav-rules">Rules</a></li>
+      <li><a href="https://store.trashmcpe.in/" target="_blank" class="nav-store">Visit our Store</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <div id="page-home" class="page active">
+    <div class="posts-grid" id="posts-container"></div>
+    <div class="pagination">
+      <button class="pagination-btn" id="prev-btn" onclick="changePage(-1)" disabled>&#8592;</button>
+      <span class="pagination-info" id="page-info">Page 1 of 4</span>
+      <button class="pagination-btn" id="next-btn" onclick="changePage(1)">&#8594;</button>
+    </div>
+  </div>
+
+  <div id="page-rules" class="page">
+    <div class="page-hero">
+      <img src="https://ottersmp.com/content/images/size/w1500/2025/02/rules.gif" alt="TrashMCPE Global Rules">
+    </div>
+    <h1 class="page-title">TrashMCPE Global Rules</h1>
+    
+    <p class="page-subtitle">11 Feb 2025</p>
+    <div class="rules-intro">
+      To ensure that everyone has a toxic-free, safe and enjoyable environment these rules are here. If you have any questions please open up a ticket in Discord and we'll be happy to clarify and give you more information!
+    </div>
+    <div class="rules-list" id="rules-list"></div>
+  </div>
+
+  <div id="page-staff" class="page">
+    <div class="staff-page-layout">
+
+      <div class="staff-apply">
+        <div class="staff-apply-title"><span>✏️</span> Staff Application</div>
+        <p>Ready to be part of the Staff Team? Take the next step and send in your application here to showcase your skills and potential!</p>
+        <a href="https://bit.ly/ottersmp_app" target="_blank" class="btn-apply">Apply Now</a>
+      </div>
+
+      <div class="staff-right">
+        <h2 class="staff-right-title">Our Staff Team</h2>
+        <div class="staff-tabs" id="staff-tabs"></div>
+        <div class="staff-grid" id="staff-grid"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="page-vote" class="page">
+    <div class="vote-outer">
+
+      <div class="vote-sidebar">
+
+        <div>
+          <div class="vote-why-title">
+            <div class="why-icon">?</div>
+            Why Vote?
+          </div>
+          <p class="vote-why-text">Vote daily to unlock awesome rewards and attract more players. Just click the links, enter your Minecraft username, and enjoy in-game bonuses!</p>
+        </div>
+
+        <div>
+          <div class="vote-rewards-title">Rewards</div>
+          <div class="rewards-grid">
+            <div class="reward-tile">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              <span class="reward-tile-label">1x Voting Lootbox</span>
+            </div>
+            <div class="reward-tile">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+              <span class="reward-tile-label">$15,000 In-game Money</span>
+            </div>
+            <div class="reward-tile">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+              <span class="reward-tile-label">16x Seasonal Currency</span>
+            </div>
+            <div class="reward-tile">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+              <span class="reward-tile-label">1x Common Key</span>
+            </div>
+            <div class="reward-tile">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z"/></svg>
+              <span class="reward-tile-label">250x Claim Blocks</span>
+            </div>
+            <div class="reward-tile">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span class="reward-tile-label">8x Golden Carrots</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="vote-right">
+        <div class="vote-links-title">Voting Links</div>
+        <div class="vote-grid">
+          <a href="https://vote.ottersmp.com/curseforge" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">Curseforge</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/minecraftservers" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">MCServers</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/planetminecraft" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">PlanetMC</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/mcsl" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">MCSL</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/minecraft-mp" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">MCMP</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/topminecraftservers" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">TopMC</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/mc_menu" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">MCMenu</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+          <a href="https://vote.ottersmp.com/bestmcsl" target="_blank" class="vote-tile">
+            <div class="vote-tile-info">
+              <span class="vote-tile-name">BestMCSL</span>
+              <span class="vote-tile-freq">Every 24 hours</span>
+            </div>
+            <span class="vote-tile-icon">&#x2197;</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="https://i.ibb.co/j9RwmNv7/download-16.png" alt="TrashMCPE">
+      <p>TrashMCPE is a Minecraft server that enhances gameplay with new features. Join now if you love Minecraft!</p>
+    </div>
+    <div class="footer-col">
+      <h4>Other Links</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('staff')">Staff</a></li>
+        <li><a href="#" onclick="showPage('vote')">Vote</a></li>
+        <li><a href="#" onclick="showPage('rules')">Rules</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support our server</h4>
+      <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.6;margin-bottom:14px;">Support us in delivering higher quality content and gameplay enhancements by purchasing ranks, crate keys, and other packages from our store.</p>
+   
+      <a href="https://store.trashmcpe.in/" target="_blank" class="footer-store-btn">Visit our Store</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 TrashMCPE. All rights reserved · We are not affiliated with Minecraft or Mojang AB.</span>
+    <div class="footer-socials">
+      <a href="https://discord.gg/ottersmp" target="_blank">Discord</a>
+      <a href="https://www.tiktok.com/@theottersmp" target="_blank">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---- PAGE ROUTING ----
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('nav-' + page);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return false;
+}
+
+// ---- POSTS DATA ----
+const allPosts = [
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/05/rapid_rivers_promo.png',
+    tag: 'News', title: 'OTTER WEEKLY - 4/30/2026',
+    date: '01 May 2026', read: '1 min read',
+    excerpt: 'The preparation to escape are being made. This is the last of the Cyber City and Thomas Co. ✨ Weekly Topics: Rapid Rivers Release, Cyber City Build Battle, Fishing 2.0 News, Build of the Week, Art of the Week.',
+    url: 'https://ottersmp.com/otter-weekly-4-30-2026/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/04/Discord_0EbQ0UZhtq-1.jpg',
+    tag: 'News', title: 'OTTER WEEKLY - 4/23/2026',
+    date: '22 April 2026', read: '1 min read',
+    excerpt: 'The glitch known as Cyber Thomas has been removed and slowly the Cyber City begins to fall as plans are made to sail to the edge of the virtual city.',
+    url: 'https://ottersmp.com/otter-weekly-4-23-2026/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/04/Discord_0EbQ0UZhtq.jpg',
+    tag: 'News', title: 'POST RELEASE - MID SEASON',
+    date: '16 April 2026', read: '1 min read',
+    excerpt: 'With the glitch, Cyber Thomas, being removed from the system. The Cyber City has lost its administrator and falls into disrepair.',
+    url: 'https://ottersmp.com/post-release-mid-season-2/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/04/Discord_BRFrHMZxZ6-1.jpg',
+    tag: 'News', title: 'OTTER WEEKLY - 4/9/2026',
+    date: '08 April 2026', read: '2 min read',
+    excerpt: 'King Thomas casts a curse to his killers. You are now in danger of being stuck in his Cybernetic City forever. Find the source of the glitch and wake up.',
+    url: 'https://ottersmp.com/otter-weekly-4-9-2026/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/04/Discord_BRFrHMZxZ6.jpg',
+    tag: 'News', title: 'POST RELEASE - CYBER CITY',
+    date: '05 April 2026', read: '2 min read',
+    excerpt: 'The curse was cast when King Thomas hit the floor. An eternal slumber is your fate but not your destiny. Break the curse that he set.',
+    url: 'https://ottersmp.com/post-release-cyber-city/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/03/Discord_kUa983FT2g.png',
+    tag: 'News', title: 'POST RELEASE - MID SEASON',
+    date: '16 March 2026', read: '2 min read',
+    excerpt: 'With the Safari being open, Tyler the Safari Guide is welcoming you to capture the critters and keep them safe or sell them to Taylor.',
+    url: 'https://ottersmp.com/post-release-mid-season/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/03/queen_bee_boss.png',
+    tag: 'News', title: 'OTTER WEEKLY - 3/14/2026',
+    date: '14 March 2026', read: '2 min read',
+    excerpt: 'Celariya has gotten just a bit bigger with many new friends joining us! We hope that you enjoyed some of these adorable critters!',
+    url: 'https://ottersmp.com/otter-weekly-3-14-2026/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/03/rzkh5n9z.png',
+    tag: 'News', title: 'POST RELEASE - CRAZY CRITTERS',
+    date: '08 March 2026', read: '2 min read',
+    excerpt: "You've arrived in an unknown sanctuary bustling and lively with critters of all sizes. You wonder if there's more to the world...",
+    url: 'https://ottersmp.com/post-release-crazy-critters/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/03/critter_crate_showcase.png',
+    tag: 'News', title: 'OTTER WEEKLY - 3/6/2026',
+    date: '05 March 2026', read: '2 min read',
+    excerpt: 'The world of Celariya has gotten bigger and with a brand new discovery of a hidden sanctuary by Carter.',
+    url: 'https://ottersmp.com/otter-weekly-3-6-2026/', author: 'TheVISI0N'
+  },
+  {
+    img: 'https://ottersmp.com/content/images/size/w600/2026/02/crazy_critters_esc.png',
+    tag: 'News', title: 'OTTER WEEKLY - 2/26/2026',
+    date: '26 February 2026', read: '2 min read',
+    excerpt: "Cait's heartache has spread among everyone including those that inhabit Silverhaven with inexplicable heartache.",
+    url: 'https://ottersmp.com/otter-weekly-2-26-2026/', author: 'TheVISI0N'
+  },
+];
+
+const POSTS_PER_PAGE = 7; // 1 featured + 6 in grid (2 rows of 3)
+let currentPage = 1;
+const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+
+function authorCardHTML(author) {
+  return `
+    <div class="post-author">
+      <img src="https://mineskin.eu/helm/${author}/28" class="post-author-avatar" alt="${author}">
+      <div class="post-author-info">
+        <span class="post-author-label">Created By</span>
+        <span class="post-author-name">${author}</span>
+      </div>
+    </div>`;
+}
+
+function renderPosts() {
+  const container = document.getElementById('posts-container');
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const pagePosts = allPosts.slice(start, start + POSTS_PER_PAGE);
+  const [featured, ...rest] = pagePosts;
+
+  let html = '';
+
+  // Featured card
+  if (featured) {
+    html += `
+    <div class="post-card-featured">
+      <img src="${featured.img}" alt="${featured.title}" class="post-img">
+      <div class="post-body">
+        <span class="post-tag">${featured.tag}</span>
+        <h2 class="post-title">${featured.title}</h2>
+        <span class="post-date">${featured.date} &bull; ${featured.read}</span>
+        <p class="post-excerpt">${featured.excerpt}</p>
+        <div class="post-footer">
+          ${authorCardHTML(featured.author)}
+          <a href="${featured.url}" target="_blank" class="post-read-more">Read More →</a>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // 3-col grid
+  if (rest.length > 0) {
+    html += '<div class="posts-subgrid">';
+    rest.forEach(p => {
+      html += `
+      <div class="post-card">
+        <img src="${p.img}" alt="${p.title}" class="post-img">
+        <div class="post-body">
+          <span class="post-tag">${p.tag}</span>
+          <h2 class="post-title">${p.title}</h2>
+          <span class="post-date">${p.date} &bull; ${p.read}</span>
+          <p class="post-excerpt">${p.excerpt}</p>
+          <div class="post-footer">
+            ${authorCardHTML(p.author)}
+            <a href="${p.url}" target="_blank" class="post-read-more">Read More →</a>
+          </div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+  document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+  document.getElementById('prev-btn').disabled = currentPage === 1;
+  document.getElementById('next-btn').disabled = currentPage === totalPages;
+}
+
+function changePage(dir) {
+  currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
+  renderPosts();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderPosts();
+
+// ---- RULES DATA ----
+const rules = [
+  [1, "Chat Ads - Spam - Different Language", "Advertisements being sent multiple times in under 3 minutes, excessive spam, and languages other than English in public chat are not allowed. Repeated advertisements for the locations/services would also be considered a violation."],
+  [2, "No Filter Bypass // Vulgar Language", "Players are not allowed to bypass chat filters to say blacklisted words which include: slurs, gambling/casinos, and vulgar language."],
+  [3, "No Sharing Unofficial Links", "Unless this is an official TrashMCPE link or a commonly known website it is not allowed, to keep the safety of our players."],
+  [4, "Mentioning Otter Competitors", "No mentioning or advertising TrashMCPE competitors. We do not want to create drama between other servers."],
+  [5, "No 'Hot Topic' Discussions", "No political discussions referring to governments, elections, or controversial social issues. Our server is accessible to every single person around the world."],
+  [6, "No Inappropriate Behavior", "We do not allow NSFW, 18+ Topics/Jokes, Nudity, Sexual Behavior, Heavy Profanity and suggestive/borderline 'risky' conversations."],
+  [7, "No Harassment", "When someone intentionally harms or mistreats another person, often with emotional or verbal means, aiming to assert power or dominance over them."],
+  [8, "No Disrespectful Behavior", "Do not be impolite, disrespectful or inconsiderate. We suggest /ignore if you do not get along with another player."],
+  [9, "No Creating/Feeding Drama", "Do not purposefully try to disturb the peace by causing drama in chat. Deliberately posting provocative, misleading, or disruptive messages is not allowed."],
+  [10, "No Rioting", "Do not involve multiple users flooding the chat with repeated, often harmful or disruptive statements targeting something or someone."],
+  [11, "No Threats", "Do not wish ill will or threaten players with real life harm. Excessive suggestive content with '(in Minecraft)' at the end would fall under this rule."],
+  [12, "No Advertisements", "Do not advertise competitors or projects for personal gain. This extends to private servers, private Discords, or personal commissions."],
+  [13, "No Discrimination & Racism", "Any communication that attacks or uses discriminatory language with reference to a person or group based on their religion, ethnicity, nationality, race, color, descent, or gender is NOT allowed."],
+  [14, "Obstruction of Evidence", "Do not hide evidence from staff, whether it be before, during, or after an investigation."],
+  [15, "Store Deals (IRL Trading)", "You are not allowed to sell anything in-game for real life monetary value. Offering/Requesting is also not allowed."],
+  [16, "DDoS/Doxxing", "Do not reveal, engage in requesting or redistributing highly personal information of player(s) that is not public knowledge on the TrashMCPE server."],
+  [17, "No Harmful/Illegal Links", "Do not send harmful or suspicious websites. Any website that hosts or promotes illegal activities may not be sent."],
+  [18, "No Sexual Harassment/Behavior", "Do not engage in unwelcome and inappropriate behavior of a sexual nature."],
+  [19, "No Gameplay Trolling", "Do not intentionally disrupt or disturb a player to annoy, frustrate, or provoke them."],
+  [20, "No Inappropriate Gameplay", "Do not engage in actions or behaviors that are considered offensive, disruptive or heavily sexual, including offensive builds or items."],
+  [21, "No Punishment Evasion", "Do not bypass punishments. Using alt accounts to chat/evade your ban is not allowed."],
+  [22, "No Alt Gameplay", "Do not use your alt account(s) for stalls, rankup, milestones, dungeons, voting, dailies, rewards, events, auction house selling, competitions, and most gameplay functions."],
+  [23, "No Trapping", "Setting up places or mechanisms with the intention of capturing or harming other players is prohibited. TP Killing is also not allowed."],
+  [24, "No Excessive Harassment", "Do not intentionally keep bothering or be hostile to a specific person/group over a long period."],
+  [25, "No Scamming", "Always hold up the end of your deal. Deals for money should always go through /ah. Loans & IOUs are at your own risk."],
+  [26, "No Malicious Deals", "No pyramid schemes, 'doubling' schemes, false bidding, loan sharking, and unrealistic deals."],
+  [27, "No Griefing", "Trying to obstruct, destroy, defile, or any other harmful action towards another player's builds. No killing claim mobs/pets that are non-natural spawns."],
+  [28, "No Hurting the Server", "Do not lag the server with malicious Minecraft mechanics/plugin/server techniques."],
+  [29, "No Inappropriate Personal Content", "Do not have an inappropriate username, Minecraft skin, cosmetic, Discord username, or Discord profile picture."],
+  [30, "No Betrayal/Insiding/Stealing", "Do not steal/take from other players (chests, armor stands, item frames)."],
+  [31, "No Incomplete Deals", "When two or more parties agree to one working for payment and end up not fulfilling the agreed upon deal."],
+  [32, "No Harming The Server", "Do not harm the server by adding bot accounts, messaging players online in masses, or creating incredibly lag-inducing machines."],
+  [33, "No Exploitation", "No abusing exploits or unintentional features/bugs for an unfair advantage."],
+  [34, "No Illegal Modifications", "Do not use modifications that give you any advantage over players. Cheating is strictly prohibited."],
+  [35, "No Exploiting Rule Loopholes", "Do not exploit rule loopholes. Technicalities will still be counted under the general rule."],
+  [36, "No Public Displays of Romance", "Do not show romantic or public displays of romance on TrashMCPE public chats. Do not look for partners on our Discord or Minecraft server."],
+  [37, "Two Minecraft Accounts Only", "You may only have up to two Minecraft accounts per IP/player. If you have multiple family/friends in your residence, please open a ticket."],
+  [38, "No Breaking EULA/TOS", "Please follow Discord & Minecraft's EULA when posting content to the respective platform."],
+  [39, "No Self Advertisements", "Live stream links must be verified by TrashMCPE staff to be posted publicly or privately."],
+  [40, "No Claim Squatting", "Do not claim too close to a player (50-100 blocks), and do not request for a claim to be unclaimed unless you are building in that area."],
+  [41, "No Pre-Order Sales", "Items that are currently unobtainable/unreleased cannot be sold until both parties have the items accessible in-game."],
+  [100, "Rule Override", "All rules in this channel override any other current rule set in any platform or channel. Previous statements by staff made prior to 1/1/2025 are overridden by this rule set as well."],
+];
+
+const rulesList = document.getElementById('rules-list');
+rules.forEach(([num, title, desc]) => {
+  const card = document.createElement('div');
+  card.className = 'rule-card';
+  card.innerHTML = `
+    <div class="rule-num">${num}</div>
+    <div class="rule-content">
+      <h3>${title}</h3>
+      <p>${desc}</p>
+    </div>`;
+  rulesList.appendChild(card);
+});
+
+// ---- STAFF DATA ----
+const staffData = {
+  Owner: ['meed', 'Jazmine'],
+  Lead: ['AndywaysMC', 'APYG', 'nongpedz', 'Wolksy', 'CharlieCatto'],
+  Dev: ['Peopo', 'ignPurple', 'Xeravax', 'koply', 'Vrganj', 'MikelAsda'],
+  Admin: ['Blazurai'],
+  Mod: ['twinanthidium', 'BethStar', 'Beebo_the_Bee', 'EvaConly', 'TheVISI0N'],
+  Helper: ['MommaBearYC1', 'jellirolls', 'Ang3linDisguise', 'osaaki', 'StormCSL'],
+  Trainee: ['Londyyyyyyy', 'ThatsLeshy', 'whosmiya_', 'danzo950'],
+  Builder: ['AndywaysMC', 'TheFreenix', 'sinkbits', 'getawxy', 'SammysEaredRobot', 'Th3Sinn3r', 'BabyDrago_', '_hanhanni', 'vabezus'],
+};
+
+const staffTabLabels = {
+  Owner: 'Owner', Lead: 'Lead', Dev: 'Dev', Admin: 'Admin',
+  Mod: 'Mods', Helper: 'Helpers', Trainee: 'Trainees', Builder: 'Builders'
+};
+const staffRoleLabels = {
+  Owner: 'Owner', Lead: 'Lead', Dev: 'Developer', Admin: 'Admin',
+  Mod: 'Moderator', Helper: 'Helper', Trainee: 'Trainee', Builder: 'Builder'
+};
+
+let activeStaffTab = 'Owner';
+
+function renderStaffTabs() {
+  const tabsEl = document.getElementById('staff-tabs');
+  tabsEl.innerHTML = Object.keys(staffData).map(role =>
+    `<button class="staff-tab${role === activeStaffTab ? ' active' : ''}" onclick="setStaffTab('${role}')">${staffTabLabels[role]}</button>`
+  ).join('');
+}
+
+function renderStaffGrid() {
+  const grid = document.getElementById('staff-grid');
+  const members = staffData[activeStaffTab] || [];
+  grid.innerHTML = members.map(name =>
+    `<div class="staff-card role-${activeStaffTab.toLowerCase()}">
+      <div class="staff-card-name">${name}</div>
+      <div class="staff-card-role">${staffRoleLabels[activeStaffTab]}</div>
+      <img src="https://vzge.me/bust/200/${name}" alt="${name}" loading="lazy">
+    </div>`
+  ).join('');
+}
+
+function setStaffTab(role) {
+  activeStaffTab = role;
+  renderStaffTabs();
+  renderStaffGrid();
+}
+
+renderStaffTabs();
+renderStaffGrid();
+// Copies the IP to clipboard when clicked
+function copyIP(ip) {
+  navigator.clipboard.writeText(ip);
+  alert("IP Copied to clipboard: " + ip);
+}
+
+// Fetch Live Minecraft Player Count (Adjusted for pill logic)
+fetch('https://api.mcsrvstat.us/3/play.trashmcpe.in')
+  .then(response => response.json())
+  .then(data => {
+    if(data.online) {
+      document.getElementById('mc-online-num').innerText = data.players.online;
+    } else {
+      document.getElementById('mc-online-num').innerText = '0';
+    }
+  })
+  .catch(error => console.error('Error fetching Minecraft stats:', error));
+
+// Fetch Live Discord User Count (Adjusted for pill logic)
+fetch('https://discord.com/api/guilds/745497901203193978/widget.json')
+  .then(response => response.json())
+  .then(data => {
+    if(data.presence_count !== undefined) {
+      document.getElementById('discord-online-num').innerText = data.presence_count;
+    }
+  })
+  .catch(error => console.error('Error fetching Discord stats:', error));
+</script>
+</body>
+</html>
