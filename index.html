@@ -286,10 +286,7 @@
     gap: 12px;
     list-style: none;
     flex: 1;
-    width: 100%;
-  }
-  .nav-links li {
-    display: inline-flex;
+    white-space: nowrap; /* Prevents text from breaking and wrapping internally */
   }
   .nav-links a {
     color: var(--text-muted);
@@ -300,7 +297,6 @@
     font-size: 0.95rem;
     transition: all 0.2s;
     letter-spacing: 0.02em;
-    white-space: nowrap;
   }
   .nav-links a:hover, .nav-links a.active {
     color: var(--orange);
@@ -320,26 +316,23 @@
   }
 
   /* 📱 MOBILE NAVIGATION ADAPTATION */
-  @media (max-width: 600px) {
+  @media (max-width: 650px) {
     nav {
-      padding: 0 10px;
+      padding: 0 5px; /* Gives a tiny bit more room on narrow screens */
     }
     .nav-links {
-      gap: 6px;
+      gap: 6px; /* Slightly reduce gap to ensure everything fits on small devices */
     }
     .nav-links a {
-      padding: 6px 10px;
-      font-size: 0.85rem;
+      padding: 8px 10px; /* Minor padding tweak for regular links to ensure inline fit */
     }
-    /* Changes "Visit our Store" text to just "Store" on mobile devices */
+    /* Changes text to "Store" while perfectly preserving the original button size */
     .nav-store {
-      font-size: 0 !important; /* Hides original "Visit our Store" text */
-      padding: 6px 14px !important;
+      font-size: 0 !important; 
     }
     .nav-store::before {
       content: "Store";
-      font-size: 0.85rem; /* Restores correct font scaling for injected string */
-      font-weight: 800;
+      font-size: 0.95rem; /* Restores the original font size */
     }
   }
 
